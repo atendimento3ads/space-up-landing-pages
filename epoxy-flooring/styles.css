@@ -80,8 +80,9 @@ p { margin-bottom: 20px; }
 
 .benefit-layout { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr); gap: 80px; align-items: start; }
 .benefit-list { border-top: 1px solid var(--line); }
-.benefit-item { display: grid; grid-template-columns: 38px 1fr; gap: 18px; padding-block: 27px; border-bottom: 1px solid var(--line); }
-.benefit-item .plus { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--ink); color: var(--white); }
+.benefit-item { display: grid; grid-template-columns: 46px 1fr; gap: 20px; padding-block: 27px; border-bottom: 1px solid var(--line); }
+.benefit-icon { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid #f1c38d; border-radius: 12px; color: var(--accent-dark); background: #fff4e7; }
+.benefit-icon svg { width: 23px; height: 23px; stroke: currentColor; stroke-width: 1.65; stroke-linecap: round; stroke-linejoin: round; }
 .benefit-item p { color: var(--muted); margin-bottom: 0; }
 .inline-cta { display: inline-flex; gap: 10px; align-items: center; margin-top: 34px; padding-bottom: 4px; border-bottom: 2px solid var(--accent); font-size: .78rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
 
@@ -146,6 +147,12 @@ p { margin-bottom: 20px; }
 
 .contact-steps { margin-top: 52px; }
 .contact-steps .step { min-height: 230px; }
+.timeline { position: relative; grid-template-columns: repeat(3, 1fr); gap: 18px; padding-top: 26px; border-top: 0; }
+.timeline::before { content: ""; position: absolute; z-index: 0; top: 45px; left: calc(16.666% + 18px); right: calc(16.666% + 18px); height: 2px; background: linear-gradient(90deg, var(--accent), #f5bb76); }
+.timeline .step, .timeline .step:first-child { position: relative; z-index: 1; min-height: 280px; padding: 86px 28px 30px; border: 1px solid var(--line); border-radius: 14px; background: var(--white); box-shadow: 0 16px 42px rgba(11,23,48,.06); }
+.timeline .step-number { position: absolute; top: 0; left: 50%; display: grid; place-items: center; width: 40px; height: 40px; margin: 0; border: 5px solid var(--paper); border-radius: 50%; color: var(--ink); background: var(--accent); font-size: .72rem; transform: translate(-50%, 0); }
+.timeline .step h3 { max-width: 250px; }
+.timeline .step p { max-width: 300px; margin-bottom: 0; }
 .cta-panel { position: relative; margin: 12px; padding-block: clamp(72px, 9vw, 130px); overflow: hidden; border-radius: var(--radius); background: var(--accent); color: #10151f; }
 .cta-panel::after { content: ""; position: absolute; width: 600px; height: 600px; right: -170px; top: -320px; border: 1px solid rgba(11,23,48,.17); border-radius: 50%; box-shadow: 0 0 0 65px rgba(11,23,48,.05), 0 0 0 130px rgba(11,23,48,.04); }
 .cta-panel .container { position: relative; z-index: 2; }
@@ -202,6 +209,8 @@ details p { max-width: 780px; padding: 0 48px 22px 0; color: var(--muted); }
   .steps { grid-template-columns: repeat(2, 1fr); }
   .step:nth-child(2) { border-right: 0; }
   .step { border-bottom: 1px solid var(--line); }
+  .timeline { grid-template-columns: repeat(3, 1fr); }
+  .timeline .step:nth-child(2) { border-right: 1px solid var(--line); }
   .finish-card:nth-child(n) { grid-column: span 6; }
   .finish-card:last-child { grid-column: span 12; min-height: 300px; }
   .uses-grid { grid-template-columns: 1fr; }
@@ -239,6 +248,10 @@ details p { max-width: 780px; padding: 0 48px 22px 0; color: var(--muted); }
   .steps { grid-template-columns: 1fr; }
   .step, .step:first-child { min-height: 0; padding: 24px 0; border-right: 0; }
   .step-number { margin-bottom: 30px; }
+  .timeline { grid-template-columns: 1fr; gap: 14px; padding: 0 0 0 24px; }
+  .timeline::before { top: 20px; bottom: 20px; left: 19px; right: auto; width: 2px; height: auto; }
+  .timeline .step, .timeline .step:first-child, .timeline .step:nth-child(2) { min-height: 210px; padding: 30px 24px 28px 38px; border: 1px solid var(--line); }
+  .timeline .step-number { top: 28px; left: 0; margin: 0; transform: translateX(-50%); }
   .process-line { grid-template-columns: 1fr 1fr; gap: 18px 10px; }
   .use-feature { min-height: 430px; }
   .use-list, .remodel-list { padding-inline: 22px; }
