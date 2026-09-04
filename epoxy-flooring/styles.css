@@ -231,11 +231,12 @@ details p { max-width: 780px; padding: 0 48px 22px 0; color: var(--muted); }
   .nav-shell { min-height: 62px; padding: 9px 10px 9px 15px; }
   .brand { width: 150px; }
   .nav-call { min-height: 42px; padding: 10px 12px; font-size: .65rem; }
-  .hero { min-height: 790px; margin: 7px; border-radius: 13px; }
-  .hero-media::after { background: linear-gradient(0deg, rgba(5,13,29,.97) 0%, rgba(5,13,29,.7) 67%, rgba(5,13,29,.2) 100%); }
-  .page-epoxy .hero-media img { object-position: 62% center; }
+  .hero { display: flex; min-height: 0; flex-direction: column; margin: 7px; border-radius: 13px; }
+  .hero-media { position: relative; inset: auto; flex: 0 0 clamp(310px, 48vh, 430px); }
+  .hero-media::after { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(5,13,29,.28), rgba(5,13,29,.06) 55%, rgba(5,13,29,.22)); }
+  .page-epoxy .hero-media img { object-position: 52% center; }
   .page-home .hero-media img { object-position: 64% center; }
-  .hero-content { justify-content: flex-end; padding-block: 130px 38px; }
+  .hero-content { min-height: 0; justify-content: flex-start; padding-block: 38px 40px; }
   .hero-description { font-size: 1rem; }
   .hero-actions { align-items: stretch; flex-direction: column; }
   .hero-actions .button { width: 100%; }
