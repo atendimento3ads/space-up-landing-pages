@@ -232,11 +232,13 @@ details p { max-width: 780px; padding: 0 48px 22px 0; color: var(--muted); }
   .brand { width: 150px; }
   .nav-call { min-height: 42px; padding: 10px 12px; font-size: .65rem; }
   .hero { display: flex; min-height: 0; flex-direction: column; margin: 7px; border-radius: 13px; }
-  .hero-media { position: relative; inset: auto; flex: 0 0 clamp(310px, 48vh, 430px); }
+  .hero-media { position: relative; inset: auto; flex: none; margin: 78px 10px 0; overflow: hidden; border-radius: 10px; }
+  .page-epoxy .hero-media { aspect-ratio: 4 / 3; }
+  .page-home .hero-media { aspect-ratio: 16 / 10; }
   .hero-media::after { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(5,13,29,.28), rgba(5,13,29,.06) 55%, rgba(5,13,29,.22)); }
-  .page-epoxy .hero-media img { object-position: 52% center; }
+  .page-epoxy .hero-media img { object-position: center; }
   .page-home .hero-media img { object-position: 64% center; }
-  .hero-content { min-height: 0; justify-content: flex-start; padding-block: 38px 40px; }
+  .hero-content { min-height: 0; justify-content: flex-start; padding-block: 30px 40px; }
   .hero-description { font-size: 1rem; }
   .hero-actions { align-items: stretch; flex-direction: column; }
   .hero-actions .button { width: 100%; }
