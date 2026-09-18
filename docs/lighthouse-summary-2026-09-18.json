@@ -1,0 +1,122 @@
+[
+  {
+    "page": "overview",
+    "device": "mobile",
+    "measuredAt": "2026-09-18T15:27:54.372Z",
+    "lighthouseVersion": "13.5.0",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcpMs": 901,
+    "cls": 0,
+    "tbtMs": 6
+  },
+  {
+    "page": "overview",
+    "device": "desktop",
+    "measuredAt": "2026-09-18T15:28:20.043Z",
+    "lighthouseVersion": "13.5.0",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcpMs": 241,
+    "cls": 0,
+    "tbtMs": 0
+  },
+  {
+    "page": "epoxy-flooring",
+    "device": "mobile",
+    "measuredAt": "2026-09-18T15:27:35.135Z",
+    "lighthouseVersion": "13.5.0",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcpMs": 1652,
+    "cls": 0,
+    "tbtMs": 12
+  },
+  {
+    "page": "epoxy-flooring",
+    "device": "desktop",
+    "measuredAt": "2026-09-18T15:28:00.451Z",
+    "lighthouseVersion": "13.5.0",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcpMs": 421,
+    "cls": 0,
+    "tbtMs": 0
+  },
+  {
+    "page": "home-construction",
+    "device": "mobile",
+    "measuredAt": "2026-09-18T15:27:41.653Z",
+    "lighthouseVersion": "13.5.0",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcpMs": 1501,
+    "cls": 0,
+    "tbtMs": 8
+  },
+  {
+    "page": "home-construction",
+    "device": "desktop",
+    "measuredAt": "2026-09-18T15:28:07.003Z",
+    "lighthouseVersion": "13.5.0",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcpMs": 422,
+    "cls": 0,
+    "tbtMs": 0
+  },
+  {
+    "page": "siding-finishing",
+    "device": "mobile",
+    "measuredAt": "2026-09-18T15:27:48.035Z",
+    "lighthouseVersion": "13.5.0",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcpMs": 1352,
+    "cls": 0,
+    "tbtMs": 7
+  },
+  {
+    "page": "siding-finishing",
+    "device": "desktop",
+    "measuredAt": "2026-09-18T15:28:13.522Z",
+    "lighthouseVersion": "13.5.0",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcpMs": 321,
+    "cls": 0,
+    "tbtMs": 0
+  }
+]

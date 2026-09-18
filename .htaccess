@@ -1,6 +1,33 @@
 # CSP for the static Space Up pages. Requires Apache mod_headers (FileInfo).
-# Keep the inline GTM bootstrap and its SHA-256 hash in sync.
+# Keep inline GTM and JSON-LD content in sync with their SHA-256 hashes.
 # Webhooks belong ONLY in connect-src; add the confirmed HTTPS URL before use.
 # The explicit Google .com and .com.br hosts cover US and Brazilian Google endpoints.
 Header onsuccess unset Content-Security-Policy
-Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'sha256-FTdCPkxzElaMg6G4G/RvcVKZkMIHxTsCSbhl3twe1l4=' https://www.googletagmanager.com https://www.googleadservices.com https://www.google.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://www.youtube.com/iframe_api https://www.youtube.com/s/player/ https://s.ytimg.com; style-src 'self'; font-src 'self'; img-src 'self' data: https://www.googletagmanager.com https://*.google-analytics.com https://*.g.doubleclick.net https://www.google.com https://google.com https://www.google.com.br https://google.com.br https://pagead2.googlesyndication.com https://www.googleadservices.com https://i.ytimg.com; connect-src 'self' https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com https://*.g.doubleclick.net https://www.google.com https://google.com https://www.google.com.br https://google.com.br https://pagead2.googlesyndication.com https://www.googleadservices.com https://ad.doubleclick.net; frame-src https://www.googletagmanager.com https://www.youtube.com/embed/ https://www.youtube-nocookie.com/embed/; frame-ancestors 'self'; form-action 'self'"
+Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'sha256-8nhBvn/Hfwu3JEl9TnSmlhKXyi6QzI73LmrKgs560/M=' 'sha256-FTdCPkxzElaMg6G4G/RvcVKZkMIHxTsCSbhl3twe1l4=' 'sha256-K1XVKk3ic82i9ML5qXxS6MiPzXijIGaNy/0b2voNeN8=' 'sha256-heTS7IHulL1q6W5kRSIT4wjl4FtOJHCbKEJTDO9c19w=' 'sha256-xcy4ynxoAKv84fwAZqVR028Pw+pU5utcAXzX4ycGlu8=' https://www.googletagmanager.com https://www.googleadservices.com https://www.google.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://www.youtube.com/iframe_api https://www.youtube.com/s/player/ https://s.ytimg.com; style-src 'self'; font-src 'self'; img-src 'self' data: https://www.googletagmanager.com https://*.google-analytics.com https://*.g.doubleclick.net https://www.google.com https://google.com https://www.google.com.br https://google.com.br https://pagead2.googlesyndication.com https://www.googleadservices.com https://i.ytimg.com; connect-src 'self' https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com https://*.g.doubleclick.net https://www.google.com https://google.com https://www.google.com.br https://google.com.br https://pagead2.googlesyndication.com https://www.googleadservices.com https://ad.doubleclick.net; frame-src https://www.googletagmanager.com https://www.youtube.com/embed/ https://www.youtube-nocookie.com/embed/; frame-ancestors 'self'; form-action 'self'"
+
+
+# Text compression; existing CSP remains scoped to the required integration origins.
+<IfModule mod_filter.c>
+  <IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/plain text/javascript application/javascript application/json application/ld+json application/xml text/xml image/svg+xml
+  </IfModule>
+</IfModule>
+<IfModule mod_mime.c>
+  AddType image/webp .webp
+  AddType image/avif .avif
+  AddType application/xml .xml
+</IfModule>
+<IfModule mod_headers.c>
+  # Revalidate documents and crawl files; updated deploys remain discoverable.
+  <FilesMatch "\.(html|xml|txt)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+  # Assets have stable names, so avoid immutable or year-long caching.
+  <FilesMatch "\.(css|js)$">
+    Header set Cache-Control "public, max-age=3600, must-revalidate"
+  </FilesMatch>
+  <FilesMatch "\.(avif|webp|jpe?g|png|svg|ico)$">
+    Header set Cache-Control "public, max-age=604800, must-revalidate"
+  </FilesMatch>
+  Header always set X-Content-Type-Options "nosniff"
+</IfModule>

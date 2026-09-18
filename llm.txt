@@ -1,0 +1,30 @@
+# Space Up Construction
+
+> Space Up Construction is based in Natick, Massachusetts. These pages describe its flooring, residential construction, remodeling, siding, painting, and finishing services.
+
+## Services
+
+- [Epoxy flooring](https://services.spaceupconstruction.com/epoxy-flooring/): Garage and commercial concrete flooring, with flake, metallic, quartz, and solid color finishes. Preparation and installation timing depend on the existing concrete and selected flooring system.
+- [Home construction and remodeling](https://services.spaceupconstruction.com/home-construction/): New residential construction and remodeling. The property, scope, and project requirements determine the next steps.
+- [Siding, painting, and finishing](https://services.spaceupconstruction.com/siding-finishing/): Massachusetts residential siding installation and replacement; interior and exterior painting; drywall repair, plaster, and finish carpentry.
+- [Services overview](https://services.spaceupconstruction.com/): Links to all service pages and business contact information.
+
+## Contact
+
+- Business: Space Up Construction
+- Telephone: +1 (508) 474-9407
+- Email: contact@spaceupconstruction.com
+- Address: 841 Worcester St, Suite 327, Natick, MA 01760, United States
+- Contact the business to confirm service availability, estimates, and scheduling for a specific property.
+
+## Page context
+
+- Each service page contains frequently asked questions and direct telephone and email contact links.
+- The siding quote form is a preview; it does not send a request. Use the telephone or email contact instead.
+- Siding gallery images illustrate the types of work described; they are not presented as a verified project portfolio.
+- This file summarizes the public pages. It does not establish prices, certifications, ratings, guarantees, or installation dates.
+
+## Discovery
+
+- [Sitemap](https://services.spaceupconstruction.com/sitemap.xml)
+- [Crawler rules](https://services.spaceupconstruction.com/robots.txt)
