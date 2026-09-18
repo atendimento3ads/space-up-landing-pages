@@ -1,0 +1,7 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home2/hg3ads37/services.spaceupconstruction.com/
+    - /bin/mkdir -p "$DEPLOYPATH"
+    - /bin/cp index.html styles.css "$DEPLOYPATH"
+    - /bin/cp -R epoxy-flooring home-construction siding-finishing "$DEPLOYPATH"
