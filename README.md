@@ -30,7 +30,7 @@ Permissions are scoped by resource type. YouTube video/CDN requests happen withi
 
 For a webhook, allow only its confirmed HTTPS URL in `connect-src`. CSP does not grant CORS access: the endpoint must separately accept the site origin and, for JSON POSTs, the OPTIONS preflight. Never embed private webhook credentials in frontend files.
 
-The publicly served GTM container was version 1 with no tags at inspection time. Loader tests do not establish Analytics collection or Ads conversion recording; these require configured tags/IDs. The siding form remains a local demonstration and does not send leads.
+The publicly served GTM container was version 1 with no tags at inspection time. Loader tests do not establish Analytics collection or Ads conversion recording; these require configured tags/IDs. The epoxy flooring and siding forms remain local demonstrations and do not send leads.
 
 Deployment remains manual in cPanel: **Update from Remote → Deploy HEAD Commit**. After deployment verify that all four HTML responses have exactly one `Content-Security-Policy` header, then use Tag Assistant with the actual published tags and inspect CSP/CORS errors. Any additional proxy CSP combines with this policy and must also allow the needed sources.
 
@@ -64,6 +64,6 @@ Each page has a unique, service-specific title and description, canonical URL, s
 
 `sitemap.xml` lists the four canonical pages. `robots.txt` permits crawling and links to the sitemap. `llm.txt` fulfills the requested filename; `llms.txt` provides the same factual Markdown summary under the proposed convention. These discovery files do not guarantee indexing, ranking, AI recommendations, or rich results. Google recommends foundational SEO for its AI search features; it does not require special AI text files ([official guide](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide)).
 
-Submit the production sitemap in Google Search Console after the manual cPanel deployment. Production PageSpeed results and Core Web Vitals depend on the hosting response time, cache/compression modules, device/network, and the tags actually published in GTM; local laboratory results are not field measurements. The form remains a preview and does not send requests.
+Submit the production sitemap in Google Search Console after the manual cPanel deployment. Production PageSpeed results and Core Web Vitals depend on the hosting response time, cache/compression modules, device/network, and the tags actually published in GTM; local laboratory results are not field measurements. The epoxy flooring and siding forms remain previews and do not send requests.
 
 The current local audit results and functional checks are recorded in [docs/validation-2026-09-18.md](docs/validation-2026-09-18.md), with machine-readable scores in the adjacent JSON summary.

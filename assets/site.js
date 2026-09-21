@@ -9,6 +9,19 @@
       });
     });
   });
+  // Preview forms validate in the browser without sending or storing data.
+  document.querySelectorAll('[data-preview-form]').forEach((form) => {
+    const submit = form.querySelector('button[type="submit"]');
+    const status = form.querySelector('.form-status');
+    if (!submit || !status) return;
+    submit.disabled = false;
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+      status.textContent = 'This is a preview. Your request has not been sent.';
+      status.hidden = false;
+    });
+  });
   const motion = matchMedia('(prefers-reduced-motion: reduce)');
   if (motion.matches || !('IntersectionObserver' in window)) return;
   const observer = new IntersectionObserver((entries) => {
