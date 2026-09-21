@@ -20,7 +20,7 @@
 ## Page context
 
 - Each service page contains frequently asked questions and direct telephone and email contact links.
-- The epoxy flooring and siding quote forms are previews; they do not send requests. Use the telephone or email contact instead.
+- The epoxy flooring and siding quote forms are configured to email submitted contact details to contact@spaceupconstruction.com so the business can respond.
 - Siding gallery images illustrate the types of work described; they are not presented as a verified project portfolio.
 - This file summarizes the public pages. It does not establish prices, certifications, ratings, guarantees, or installation dates.
 

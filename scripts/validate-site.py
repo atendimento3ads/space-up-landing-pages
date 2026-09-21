@@ -49,7 +49,7 @@ for page in PAGES:
     for stylesheet in [ROOT / 'styles.css', ROOT / 'assets/site.css', ROOT / 'siding-finishing/styles.css']:
         assert not re.search(r'@media\s*\([^)]*max-width:', stylesheet.read_text()), f'{stylesheet}: use mobile-first min-width enhancements'
     for tag, attrs in document.elements:
-        refs = [attrs[k] for k in ('href', 'src') if k in attrs]
+        refs = [attrs[k] for k in ('href', 'src', 'action') if k in attrs]
         refs += [item.strip().split()[0] for item in attrs.get('srcset', '').split(',') if item.strip()]
         if attrs.get('property') in ('og:image', 'og:url') or attrs.get('name') == 'twitter:image':
             refs.append(attrs['content'])
@@ -91,12 +91,20 @@ for page in PAGES:
                 structured = [(q['name'], q['acceptedAnswer']['text']) for q in faq['mainEntity']]
                 assert actual == structured, f'{page}: FAQ schema does not match visible answers'
     assert 'GTM-52FS343L' in document.scripts[0][1], f'{page}: GTM must be the first script'
+    quote_forms = [a for t, a in document.elements if t == 'form' and 'quote-form' in a.get('class', '').split()]
+    if page.parent.name in ('epoxy-flooring', 'siding-finishing'):
+        assert len(quote_forms) == 1, f'{page}: expected one quote form'
+        form = quote_forms[0]
+        assert form.get('action') == '/submit-quote.php' and form.get('method') == 'post', f'{page}: incorrect form endpoint'
+        assert 'data-quote-form' in form, f'{page}: JavaScript form enhancement missing'
+        assert 'name="company_website"' in source, f'{page}: spam trap missing'
+        assert 'name="submission_id"' in source, f'{page}: duplicate-submission protection missing'
 
 urls = {node.text for node in ET.parse(ROOT / 'sitemap.xml').findall('.//{http://www.sitemaps.org/schemas/sitemap/0.9}loc')}
 assert urls == canonicals, 'Sitemap must match all canonical URLs'
 assert BASE + 'sitemap.xml' in (ROOT / 'robots.txt').read_text()
 assert (ROOT / 'llm.txt').read_text() == (ROOT / 'llms.txt').read_text()
 assert "'unsafe-inline'" not in POLICY and "'unsafe-eval'" not in POLICY
-for asset in ('assets', 'robots.txt', 'sitemap.xml', 'llm.txt', 'llms.txt', 'favicon.ico'):
+for asset in ('assets', 'robots.txt', 'sitemap.xml', 'llm.txt', 'llms.txt', 'favicon.ico', 'submit-quote.php'):
     assert asset in (ROOT / '.cpanel.yml').read_text(), f'Deployment recipe missing {asset}'
 print(f'PASS: {len(PAGES)} pages, {count} local URLs/assets, sitemap, factual FAQ schema, asset versions and CSP hashes.')

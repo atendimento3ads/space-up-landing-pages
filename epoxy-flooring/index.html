@@ -16,8 +16,8 @@ f.parentNode.insertBefore(j,f);
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Epoxy garage and commercial flooring in Natick, Massachusetts. Explore flake, metallic, quartz and solid color finishes. Call Space Up at (508) 474-9407.">
   <title>Epoxy Flooring in Natick, MA | Space Up Construction</title>
-  <link rel="stylesheet" href="../assets/site.css?v=7b42e61a0e19">
-  <script src="../assets/site.js?v=9679ccbf5f36" defer></script>
+  <link rel="stylesheet" href="../assets/site.css?v=ace648347842">
+  <script src="../assets/site.js?v=6fc0fdb012df" defer></script>
   <meta name="theme-color" content="#0b1730">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <link rel="canonical" href="https://services.spaceupconstruction.com/epoxy-flooring/">
@@ -191,16 +191,19 @@ f.parentNode.insertBefore(j,f);
 
     <section class="section quote-section" id="quote" aria-labelledby="quote-title">
       <div class="container quote-layout">
-        <div><p class="section-label">Request an Epoxy Flooring Quote</p><h2 id="quote-title">Tell us about your concrete floor</h2><p class="lead">Call or email Space Up to discuss the space, the condition of the concrete, and the finish you want. The form below is a preview and does not send information.</p><a class="quote-phone" href="tel:+15084749407">(508) 474-9407</a></div>
-        <form class="quote-form" data-preview-form aria-describedby="epoxy-form-note">
+        <div><p class="section-label">Request an Epoxy Flooring Quote</p><h2 id="quote-title">Tell us about your concrete floor</h2><p class="lead">Send the form, call, or email Space Up to discuss the space, the condition of the concrete, and the finish you want.</p><a class="quote-phone" href="tel:+15084749407">(508) 474-9407</a></div>
+        <form class="quote-form" data-quote-form action="/submit-quote.php" method="post" accept-charset="UTF-8" aria-describedby="epoxy-form-note">
+          <input type="hidden" name="service" value="Epoxy Flooring">
+          <input type="hidden" name="submission_id" value="">
+          <div class="form-trap" aria-hidden="true"><label for="epoxy-company-website">Leave this field blank</label><input id="epoxy-company-website" name="company_website" type="text" tabindex="-1" autocomplete="off"></div>
           <div class="form-grid">
             <div class="field"><label for="epoxy-name">Name <span aria-hidden="true">*</span></label><input id="epoxy-name" name="name" autocomplete="name" maxlength="120" required></div>
             <div class="field"><label for="epoxy-phone">Phone <span aria-hidden="true">*</span></label><input id="epoxy-phone" name="phone" type="tel" autocomplete="tel" maxlength="40" required></div>
             <div class="field"><label for="epoxy-email">Email <span aria-hidden="true">*</span></label><input id="epoxy-email" name="email" type="email" autocomplete="email" maxlength="254" required></div>
             <div class="field"><label for="epoxy-zip">ZIP Code</label><input id="epoxy-zip" name="zip" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{5}(-[0-9]{4})?" title="Enter a 5-digit ZIP code or ZIP+4." maxlength="10"></div>
           </div>
-          <button class="button" type="submit" disabled>Request an Epoxy Flooring Quote</button>
-          <p class="form-note" id="epoxy-form-note">Preview form — no information is sent.</p>
+          <button class="button" type="submit">Request an Epoxy Flooring Quote</button>
+          <p class="form-note" id="epoxy-form-note">Your contact details will be emailed to contact@spaceupconstruction.com so Space Up can respond to your quote request.</p>
           <p class="form-status" role="status" aria-live="polite" hidden></p>
         </form>
       </div>

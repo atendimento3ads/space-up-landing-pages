@@ -24,19 +24,19 @@ These static pages authorize the exact inline bootstrap and JSON-LD blocks with 
 | Analytics | GA4 connections and pixels on the Google Analytics / Analytics endpoints, plus the advertising endpoints documented by Google |
 | Google Ads | Google Ads scripts, connections and pixels on the explicit Google Ads, DoubleClick, Google and Google Syndication hosts |
 | YouTube | Standard and privacy embed paths; IFrame API scripts; thumbnails on `i.ytimg.com` |
-| Webhook | Local same-origin requests only until the exact external HTTPS webhook URL is confirmed |
+| Quote forms | Same-origin `POST` to `/submit-quote.php`; no external webhook or plugin |
 
 Permissions are scoped by resource type. YouTube video/CDN requests happen within its iframe; the parent page does not need a broad `googlevideo.com` or `gstatic.com` permission. Google regional endpoints are listed explicitly for `.com` and `.com.br`; add any other required Google country host individually. Custom JavaScript variables and arbitrary inline Custom HTML tags are restricted: use native tags or sandboxed custom templates. Tag Assistant preview requires additional development-only origins from the [Google CSP guide](https://developers.google.com/tag-platform/security/guides/csp).
 
-For a webhook, allow only its confirmed HTTPS URL in `connect-src`. CSP does not grant CORS access: the endpoint must separately accept the site origin and, for JSON POSTs, the OPTIONS preflight. Never embed private webhook credentials in frontend files.
+The Epoxy Flooring and Siding forms post to a same-origin PHP endpoint, so the current `connect-src 'self'` and `form-action 'self'` directives already cover submission. The endpoint validates every field again, rejects cross-origin requests, uses a honeypot and per-IP rate limit, and deduplicates retries with a per-submission identifier. It sends plain-text mail through the cPanel/PHP local mail transport. Messages go to `contact@spaceupconstruction.com`; the validated visitor address is used only as `Reply-To`. No mail credentials or external service are exposed in frontend files.
 
-The publicly served GTM container was version 1 with no tags at inspection time. Loader tests do not establish Analytics collection or Ads conversion recording; these require configured tags/IDs. The epoxy flooring and siding forms remain local demonstrations and do not send leads.
+The publicly served GTM container was version 1 with no tags at inspection time. Loader tests do not establish Analytics collection or Ads conversion recording; these require configured tags/IDs.
 
 Deployment remains manual in cPanel: **Update from Remote → Deploy HEAD Commit**. After deployment verify that all four HTML responses have exactly one `Content-Security-Policy` header, then use Tag Assistant with the actual published tags and inspect CSP/CORS errors. Any additional proxy CSP combines with this policy and must also allow the needed sources.
 
 ### Validation before deployment
 
-Validated with local Apache using the actual `.htaccess`: all four HTML pages return HTTP 200 with one CSP header and a matching GTM hash; 403/404 responses retain the header. Browser smoke tests loaded GTM, the GA4 loader (a test ID with no `config` call), Google Ads' async loader, YouTube IFrame API, and both standard/privacy embeds. An unauthorized external script was blocked. CSS, the exclusive FAQ, and the siding demonstration form continued working. No real conversion, Analytics configuration event, lead, or webhook POST was sent. Webhook CSP/CORS and actual event delivery remain untested until the endpoint and active tags are supplied.
+Validated with local Apache using the actual `.htaccess`: all four HTML pages return HTTP 200 with one CSP header and a matching GTM hash; 403/404 responses retain the header. Browser smoke tests loaded GTM, the GA4 loader (a test ID with no `config` call), Google Ads' async loader, YouTube IFrame API, and both standard/privacy embeds. An unauthorized external script was blocked. CSS and the exclusive FAQ continued working. The browser form flow was tested against controlled same-origin success and failure responses without sending a real lead, and the PHP endpoint passed static syntax parsing. Confirm mailbox delivery once after the cPanel deployment because the local environment cannot inspect the hosting account's mail queue, SPF, DKIM, or mail logs.
 
 
 ## Mobile-first layouts and motion
@@ -64,6 +64,6 @@ Each page has a unique, service-specific title and description, canonical URL, s
 
 `sitemap.xml` lists the four canonical pages. `robots.txt` permits crawling and links to the sitemap. `llm.txt` fulfills the requested filename; `llms.txt` provides the same factual Markdown summary under the proposed convention. These discovery files do not guarantee indexing, ranking, AI recommendations, or rich results. Google recommends foundational SEO for its AI search features; it does not require special AI text files ([official guide](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide)).
 
-Submit the production sitemap in Google Search Console after the manual cPanel deployment. Production PageSpeed results and Core Web Vitals depend on the hosting response time, cache/compression modules, device/network, and the tags actually published in GTM; local laboratory results are not field measurements. The epoxy flooring and siding forms remain previews and do not send requests.
+Submit the production sitemap in Google Search Console after the manual cPanel deployment. Production PageSpeed results and Core Web Vitals depend on the hosting response time, cache/compression modules, device/network, and the tags actually published in GTM; local laboratory results are not field measurements. After deployment, submit one synthetic form request and confirm it in `contact@spaceupconstruction.com`; if it is delayed, inspect cPanel Email Deliverability and Track Delivery before changing application code.
 
 The current local audit results and functional checks are recorded in [docs/validation-2026-09-18.md](docs/validation-2026-09-18.md), with machine-readable scores in the adjacent JSON summary.
