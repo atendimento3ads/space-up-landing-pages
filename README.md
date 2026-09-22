@@ -34,8 +34,6 @@ The publicly served GTM container was version 1 with no tags at inspection time.
 
 Deployment remains manual in cPanel: **Update from Remote → Deploy HEAD Commit**. After deployment verify that all four HTML responses have exactly one `Content-Security-Policy` header, then use Tag Assistant with the actual published tags and inspect CSP/CORS errors. Any additional proxy CSP combines with this policy and must also allow the needed sources.
 
-The Meta HTML verification file `7g70voolv25xx4zh31wo93uk6a16y0.html` is copied to the root of this cPanel deployment. This repository serves `services.spaceupconstruction.com`; Meta's supplied instructions target `spaceupconstruction.com`, which is currently served by Wix. Verifying the apex domain therefore also requires placing the token through Wix or using Meta's DNS verification option for the apex domain.
-
 ### Validation before deployment
 
 Validated with local Apache using the actual `.htaccess`: all four HTML pages return HTTP 200 with one CSP header and a matching GTM hash; 403/404 responses retain the header. Browser smoke tests loaded GTM, the GA4 loader (a test ID with no `config` call), Google Ads' async loader, YouTube IFrame API, and both standard/privacy embeds. An unauthorized external script was blocked. CSS and the exclusive FAQ continued working. The browser form flow was tested against controlled same-origin success and failure responses without sending a real lead, and the PHP endpoint passed static syntax parsing. Confirm mailbox delivery once after the cPanel deployment because the local environment cannot inspect the hosting account's mail queue, SPF, DKIM, or mail logs.

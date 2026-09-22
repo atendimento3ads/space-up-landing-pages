@@ -3,5 +3,5 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home2/hg3ads37/services.spaceupconstruction.com/
     - /bin/mkdir -p "$DEPLOYPATH"
-    - /bin/cp .htaccess index.html styles.css favicon.ico robots.txt sitemap.xml llm.txt llms.txt submit-quote.php 7g70voolv25xx4zh31wo93uk6a16y0.html "$DEPLOYPATH"
+    - /bin/cp .htaccess index.html styles.css favicon.ico robots.txt sitemap.xml llm.txt llms.txt submit-quote.php "$DEPLOYPATH"
     - /bin/cp -R assets epoxy-flooring home-construction siding-finishing "$DEPLOYPATH"

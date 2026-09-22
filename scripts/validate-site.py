@@ -10,8 +10,6 @@ import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parent.parent
 BASE = 'https://services.spaceupconstruction.com/'
-VERIFICATION_FILE = '7g70voolv25xx4zh31wo93uk6a16y0.html'
-VERIFICATION_TOKEN = b'7g70voolv25xx4zh31wo93uk6a16y0'
 PAGES = [ROOT / 'index.html', *sorted(ROOT.glob('*/index.html'))]
 POLICY = (ROOT / '.htaccess').read_text()
 
@@ -106,8 +104,7 @@ urls = {node.text for node in ET.parse(ROOT / 'sitemap.xml').findall('.//{http:/
 assert urls == canonicals, 'Sitemap must match all canonical URLs'
 assert BASE + 'sitemap.xml' in (ROOT / 'robots.txt').read_text()
 assert (ROOT / 'llm.txt').read_text() == (ROOT / 'llms.txt').read_text()
-assert (ROOT / VERIFICATION_FILE).read_bytes() == VERIFICATION_TOKEN, 'Domain verification token changed'
 assert "'unsafe-inline'" not in POLICY and "'unsafe-eval'" not in POLICY
-for asset in ('assets', 'robots.txt', 'sitemap.xml', 'llm.txt', 'llms.txt', 'favicon.ico', 'submit-quote.php', VERIFICATION_FILE):
+for asset in ('assets', 'robots.txt', 'sitemap.xml', 'llm.txt', 'llms.txt', 'favicon.ico', 'submit-quote.php'):
     assert asset in (ROOT / '.cpanel.yml').read_text(), f'Deployment recipe missing {asset}'
 print(f'PASS: {len(PAGES)} pages, {count} local URLs/assets, sitemap, factual FAQ schema, asset versions and CSP hashes.')
