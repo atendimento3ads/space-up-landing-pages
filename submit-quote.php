@@ -2,11 +2,13 @@
 declare(strict_types=1);
 
 const CONTACT_EMAIL = "contact@spaceupconstruction.com";
+// Quote requests are delivered here; CONTACT_EMAIL stays the fallback sender.
+const LEAD_EMAIL = "barretosantosthiago@gmail.com";
 const SITE_HOST = "services.spaceupconstruction.com";
 const RATE_LIMIT_SECONDS = 20;
 // The domain's SPF/DMARC only authorize Microsoft 365, so mail() from this
 // host is rejected or quarantined. Leads are relayed through FormSubmit first.
-const RELAY_ENDPOINT = "https://formsubmit.co/ajax/" . CONTACT_EMAIL;
+const RELAY_ENDPOINT = "https://formsubmit.co/ajax/" . LEAD_EMAIL;
 const RELAY_TIMEOUT_SECONDS = 10;
 
 header("Cache-Control: no-store, max-age=0");
@@ -246,7 +248,7 @@ function deliver_message(
         "X-Auto-Response-Suppress: All",
     ];
 
-    return @mail(CONTACT_EMAIL, $subject, $body, implode("\r\n", $headers));
+    return @mail(LEAD_EMAIL, $subject, $body, implode("\r\n", $headers));
 }
 
 if (($_SERVER["REQUEST_METHOD"] ?? "") !== "POST") {
