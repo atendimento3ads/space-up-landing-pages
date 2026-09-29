@@ -10,10 +10,54 @@ const RATE_LIMIT_SECONDS = 20;
 // host is rejected or quarantined. Leads are relayed through FormSubmit first.
 const RELAY_ENDPOINT = "https://formsubmit.co/ajax/" . LEAD_EMAIL;
 const RELAY_TIMEOUT_SECONDS = 10;
+// Diagnostic log outside the public web root (/home2/hg3ads37/spaceup-logs/ on cPanel).
+const LOG_FILE = __DIR__ . "/../spaceup-logs/quote-form.log";
+const LOG_MAX_BYTES = 1048576;
 
 header("Cache-Control: no-store, max-age=0");
 header("X-Content-Type-Options: nosniff");
 header("Referrer-Policy: same-origin");
+
+function quote_log(string $event, array $data = []): void
+{
+    static $request_id = null;
+    $request_id ??= bin2hex(random_bytes(4));
+
+    $line =
+        gmdate("Y-m-d H:i:s") .
+        " UTC [" .
+        $request_id .
+        "] " .
+        $event .
+        ($data !== []
+            ? " " .
+                json_encode(
+                    $data,
+                    JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
+                )
+            : "") .
+        "\n";
+
+    $directory = dirname(LOG_FILE);
+    if (!is_dir($directory)) {
+        @mkdir($directory, 0700, true);
+    }
+    if (is_file(LOG_FILE) && (int) @filesize(LOG_FILE) > LOG_MAX_BYTES) {
+        @rename(LOG_FILE, LOG_FILE . ".1");
+    }
+    if (@file_put_contents(LOG_FILE, $line, FILE_APPEND | LOCK_EX) === false) {
+        error_log("Space Up quote form: " . trim($line));
+    }
+}
+
+function mask_email(string $email): string
+{
+    $at = strrpos($email, "@");
+    if ($at === false) {
+        return $email === "" ? "" : "(invalid)";
+    }
+    return substr($email, 0, min(2, $at)) . "***" . substr($email, $at);
+}
 
 function wants_json(): bool
 {
@@ -22,6 +66,7 @@ function wants_json(): bool
 
 function respond(int $status, string $message): void
 {
+    quote_log("response", ["status" => $status, "message" => $message]);
     http_response_code($status);
     if (wants_json()) {
         header("Content-Type: application/json; charset=UTF-8");
@@ -161,6 +206,7 @@ function relay_message(string $subject, array $fields, string $reply_to): bool
         JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
     );
     if ($payload === false) {
+        quote_log("relay_error", ["error" => json_last_error_msg()]);
         return false;
     }
 
@@ -174,6 +220,8 @@ function relay_message(string $subject, array $fields, string $reply_to): bool
 
     $status = 0;
     $response = false;
+    $transport_error = "";
+    $started = microtime(true);
     if (function_exists("curl_init")) {
         $curl = curl_init(RELAY_ENDPOINT);
         curl_setopt_array($curl, [
@@ -186,6 +234,10 @@ function relay_message(string $subject, array $fields, string $reply_to): bool
         ]);
         $response = curl_exec($curl);
         $status = (int) curl_getinfo($curl, CURLINFO_RESPONSE_CODE);
+        if ($response === false) {
+            $transport_error =
+                "curl " . curl_errno($curl) . ": " . curl_error($curl);
+        }
     } else {
         $context = stream_context_create([
             "http" => [
@@ -197,6 +249,11 @@ function relay_message(string $subject, array $fields, string $reply_to): bool
             ],
         ]);
         $response = @file_get_contents(RELAY_ENDPOINT, false, $context);
+        if ($response === false) {
+            $transport_error =
+                "stream: " . (error_get_last()["message"] ?? "unknown error") .
+                (ini_get("allow_url_fopen") ? "" : " (allow_url_fopen off)");
+        }
         if (
             isset($http_response_header[0]) &&
             preg_match('/\s(\d{3})\s/', $http_response_header[0], $match)
@@ -207,19 +264,19 @@ function relay_message(string $subject, array $fields, string $reply_to): bool
 
     $result = is_string($response) ? json_decode($response, true) : null;
     $success = is_array($result) ? $result["success"] ?? false : false;
-    if ($status === 200 && ($success === true || $success === "true")) {
-        return true;
-    }
+    $delivered =
+        $status === 200 && ($success === true || $success === "true");
 
     // An unactivated form answers 200 with success "false" and an activation notice.
-    $detail = is_array($result) ? (string) ($result["message"] ?? "") : "";
-    error_log(
-        "Space Up quote form: relay failed (HTTP " .
-            $status .
-            ") " .
-            substr($detail, 0, 300),
-    );
-    return false;
+    quote_log($delivered ? "relay_ok" : "relay_failed", [
+        "endpoint" => RELAY_ENDPOINT,
+        "transport" => function_exists("curl_init") ? "curl" : "stream",
+        "http_status" => $status,
+        "ms" => (int) round((microtime(true) - $started) * 1000),
+        "error" => $transport_error,
+        "response" => is_string($response) ? substr($response, 0, 500) : "",
+    ]);
+    return $delivered;
 }
 
 function deliver_message(
@@ -232,6 +289,7 @@ function deliver_message(
         getenv("SPACEUP_MAIL_TEST_MODE") === "1" &&
         in_array(PHP_SAPI, ["cli", "cli-server"], true);
     if ($test_mode) {
+        quote_log("test_mode_skip_delivery");
         return true;
     }
 
@@ -248,7 +306,12 @@ function deliver_message(
         "X-Auto-Response-Suppress: All",
     ];
 
-    return @mail(LEAD_EMAIL, $subject, $body, implode("\r\n", $headers));
+    $sent = @mail(LEAD_EMAIL, $subject, $body, implode("\r\n", $headers));
+    quote_log("fallback_mail", [
+        "to" => LEAD_EMAIL,
+        "accepted_by_local_mta" => $sent,
+    ]);
+    return $sent;
 }
 
 if (($_SERVER["REQUEST_METHOD"] ?? "") !== "POST") {
@@ -257,10 +320,12 @@ if (($_SERVER["REQUEST_METHOD"] ?? "") !== "POST") {
 }
 
 if (!same_origin_request()) {
+    quote_log("rejected_origin", ["origin" => $_SERVER["HTTP_ORIGIN"] ?? ""]);
     respond(403, "This request could not be accepted.");
 }
 
 if (posted_value("company_website", 200) !== "") {
+    quote_log("honeypot_filled");
     respond(200, "Thank you. Your request has been received.");
 }
 
@@ -272,6 +337,15 @@ $zip = posted_value("zip", 10);
 $need = posted_value("need", 80);
 $details = posted_value("details", 2000);
 $submission_id = posted_value("submission_id", 80);
+
+quote_log("request", [
+    "page" => (string) parse_url($_SERVER["HTTP_REFERER"] ?? "", PHP_URL_PATH),
+    "origin" => $_SERVER["HTTP_ORIGIN"] ?? "",
+    "service" => $service,
+    "email" => mask_email($email),
+    "submission_id" => $submission_id,
+    "client" => substr(hash("sha256", $_SERVER["REMOTE_ADDR"] ?? ""), 0, 12),
+]);
 
 $allowed_services = [
     "Epoxy Flooring" => "Epoxy Flooring",
