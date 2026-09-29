@@ -46,7 +46,7 @@ for page in PAGES:
     assert sum(t == 'h1' for t, a in document.elements) == 1, f'{page}: expected one H1'
     assert sum(t == 'meta' and a.get('name') == 'description' for t, a in document.elements) == 1
     assert 'href="https://3ads.com.br/">3ADS</a>' in source
-    for stylesheet in [ROOT / 'styles.css', ROOT / 'assets/site.css', ROOT / 'siding-finishing/styles.css']:
+    for stylesheet in [ROOT / 'styles.css', ROOT / 'assets/site.css', ROOT / 'siding-finishing/styles.css', ROOT / 'garage-remodeling/styles.css', ROOT / 'plumbing/styles.css']:
         assert not re.search(r'@media\s*\([^)]*max-width:', stylesheet.read_text()), f'{stylesheet}: use mobile-first min-width enhancements'
     for tag, attrs in document.elements:
         refs = [attrs[k] for k in ('href', 'src', 'action') if k in attrs]
@@ -92,7 +92,7 @@ for page in PAGES:
                 assert actual == structured, f'{page}: FAQ schema does not match visible answers'
     assert 'GTM-52FS343L' in document.scripts[0][1], f'{page}: GTM must be the first script'
     quote_forms = [a for t, a in document.elements if t == 'form' and 'quote-form' in a.get('class', '').split()]
-    if page.parent.name in ('epoxy-flooring', 'siding-finishing'):
+    if page.parent.name in ('epoxy-flooring', 'siding-finishing', 'garage-remodeling', 'plumbing'):
         assert len(quote_forms) == 1, f'{page}: expected one quote form'
         form = quote_forms[0]
         assert form.get('action') == '/submit-quote.php' and form.get('method') == 'post', f'{page}: incorrect form endpoint'

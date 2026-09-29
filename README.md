@@ -5,6 +5,8 @@ Static landing pages built with HTML, mobile-first CSS, and lightweight progress
 - `/epoxy-flooring/` — Epoxy flooring for garages and commercial spaces
 - `/home-construction/` — New home construction and home remodeling
 - `/siding-finishing/` — Siding, painting, drywall, plaster, and finish carpentry
+- `/garage-remodeling/` — Residential garage remodeling: flooring, walls/drywall, painting and finish work
+- `/plumbing/` — Residential plumbing repairs, leaks, replacements and installations
 
 ## Local preview
 
@@ -28,7 +30,7 @@ These static pages authorize the exact inline bootstrap and JSON-LD blocks with 
 
 Permissions are scoped by resource type. YouTube video/CDN requests happen within its iframe; the parent page does not need a broad `googlevideo.com` or `gstatic.com` permission. Google regional endpoints are listed explicitly for `.com` and `.com.br`; add any other required Google country host individually. Custom JavaScript variables and arbitrary inline Custom HTML tags are restricted: use native tags or sandboxed custom templates. Tag Assistant preview requires additional development-only origins from the [Google CSP guide](https://developers.google.com/tag-platform/security/guides/csp).
 
-The Epoxy Flooring and Siding forms post to a same-origin PHP endpoint, so the current `connect-src 'self'` and `form-action 'self'` directives already cover submission. The endpoint validates every field again, rejects cross-origin requests, uses a honeypot and per-IP rate limit, and deduplicates retries with a per-submission identifier. It sends plain-text mail through the cPanel/PHP local mail transport. Messages go to `contact@spaceupconstruction.com`; the validated visitor address is used only as `Reply-To`. No mail credentials or external service are exposed in frontend files.
+The Epoxy Flooring, Siding, Garage Remodeling and Plumbing forms post to a same-origin PHP endpoint, so the current `connect-src 'self'` and `form-action 'self'` directives already cover submission. The endpoint validates every field again, rejects cross-origin requests, uses a honeypot and per-IP rate limit, and deduplicates retries with a per-submission identifier. It sends plain-text mail through the cPanel/PHP local mail transport. Messages go to `contact@spaceupconstruction.com`; the validated visitor address is used only as `Reply-To`. No mail credentials or external service are exposed in frontend files.
 
 The publicly served GTM container was version 1 with no tags at inspection time. Loader tests do not establish Analytics collection or Ads conversion recording; these require configured tags/IDs.
 

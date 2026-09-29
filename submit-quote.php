@@ -181,12 +181,36 @@ $name = posted_value("name", 120);
 $phone = posted_value("phone", 40);
 $email = posted_value("email", 254);
 $zip = posted_value("zip", 10);
+$need = posted_value("need", 80);
+$details = posted_value("details", 2000);
 $submission_id = posted_value("submission_id", 80);
 
 $allowed_services = [
     "Epoxy Flooring" => "Epoxy Flooring",
     "Siding Installation and Replacement" =>
         "Siding Installation and Replacement",
+    "Garage Remodeling" => "Garage Remodeling",
+    "Plumbing" => "Plumbing",
+];
+
+// Services with a required "need" select list the options shown on their page.
+$allowed_needs = [
+    "Garage Remodeling" => [
+        "Full Garage Remodel",
+        "Flooring",
+        "Walls / Drywall",
+        "Painting / Finishing",
+        "Multiple Areas",
+        "Not Sure Yet",
+    ],
+    "Plumbing" => [
+        "Leak",
+        "Plumbing Repair",
+        "Installation",
+        "Replacement",
+        "Not Sure",
+        "Other",
+    ],
 ];
 
 if (!isset($allowed_services[$service])) {
@@ -209,6 +233,12 @@ if ($zip !== "" && !preg_match('/^[0-9]{5}(?:-[0-9]{4})?$/', $zip)) {
 }
 if ($service === "Siding Installation and Replacement" && $zip === "") {
     respond(422, "Please enter your ZIP code.");
+}
+if (
+    isset($allowed_needs[$service]) &&
+    !in_array($need, $allowed_needs[$service], true)
+) {
+    respond(422, "Please choose what you need help with.");
 }
 if (
     $submission_id !== "" &&
@@ -243,6 +273,14 @@ $body = implode("\n", [
     "Phone: " . $phone,
     "Email: " . $email,
     "ZIP Code: " . ($zip !== "" ? $zip : "Not provided"),
+]);
+if (isset($allowed_needs[$service])) {
+    $body .= "\nNeeds help with: " . $need;
+}
+if ($details !== "") {
+    $body .= "\nProject details: " . $details;
+}
+$body .= "\n" . implode("\n", [
     "",
     "Submitted: " . gmdate("Y-m-d H:i:s") . " UTC",
 ]);

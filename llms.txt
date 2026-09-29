@@ -1,12 +1,14 @@
 # Space Up Construction
 
-> Space Up Construction is based in Natick, Massachusetts. These pages describe its flooring, residential construction, remodeling, and siding services.
+> Space Up Construction is based in Natick, Massachusetts. These pages describe its flooring, residential construction, remodeling, siding, garage remodeling, and plumbing services.
 
 ## Services
 
 - [Epoxy flooring](https://services.spaceupconstruction.com/epoxy-flooring/): Garage and commercial concrete flooring, with flake, metallic, quartz, and solid color finishes. Preparation and installation timing depend on the existing concrete and selected flooring system.
 - [Home construction and remodeling](https://services.spaceupconstruction.com/home-construction/): New residential construction and remodeling. The property, scope, and project requirements determine the next steps.
 - [Siding installation and replacement](https://services.spaceupconstruction.com/siding-finishing/): Massachusetts residential siding installation and replacement, with scope based on the condition of the home.
+- [Garage remodeling](https://services.spaceupconstruction.com/garage-remodeling/): Residential garage remodeling in Massachusetts, including flooring, walls and drywall, painting and finishing, and interior finish work. Scope depends on the current condition of the garage.
+- [Plumbing](https://services.spaceupconstruction.com/plumbing/): Residential plumbing repairs, leak repair, replacements, and installations in Massachusetts. The work depends on the issue and the scope of the project.
 - [Services overview](https://services.spaceupconstruction.com/): Links to all service pages and business contact information.
 
 ## Contact
@@ -20,7 +22,8 @@
 ## Page context
 
 - Each service page contains frequently asked questions and direct telephone and email contact links.
-- The epoxy flooring and siding quote forms are configured to email submitted contact details to contact@spaceupconstruction.com so the business can respond.
+- The epoxy flooring, siding, garage remodeling, and plumbing quote forms are configured to email submitted contact details to contact@spaceupconstruction.com so the business can respond.
+- Garage remodeling gallery images are illustrative, and the plumbing gallery contains placeholders until project photos are supplied.
 - Siding gallery images illustrate the types of work described; they are not presented as a verified project portfolio.
 - This file summarizes the public pages. It does not establish prices, certifications, ratings, guarantees, or installation dates.
 

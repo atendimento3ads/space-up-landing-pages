@@ -139,8 +139,12 @@ details p { max-width: 780px; padding: 0 48px 22px 0; color: var(--muted); }
 .field { min-width: 0; }
 .field label { display: block; font-size: .85rem; font-weight: 700; margin-bottom: 9px; }
 .field label span { color: var(--accent-dark); }
-.field input { width: 100%; min-height: 52px; padding: 12px; border: 1px solid #aeb8c5; border-radius: 7px; background: #fafbfc; color: var(--ink); font: inherit; }
-.field input:focus { border-color: var(--accent-dark); outline: 2px solid rgba(242,138,21,.25); outline-offset: 2px; }
+.field input, .field select, .field textarea { width: 100%; min-height: 52px; padding: 12px; border: 1px solid #aeb8c5; border-radius: 7px; background: #fafbfc; color: var(--ink); font: inherit; }
+.field select { appearance: none; padding-right: 44px; background-image: linear-gradient(45deg, transparent 50%, var(--ink) 50%), linear-gradient(135deg, var(--ink) 50%, transparent 50%); background-position: calc(100% - 22px) 50%, calc(100% - 16px) 50%; background-size: 6px 6px; background-repeat: no-repeat; cursor: pointer; }
+.field textarea { min-height: 132px; resize: vertical; line-height: 1.5; }
+.field textarea::placeholder { color: #7a8494; font-style: italic; }
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent-dark); outline: 2px solid rgba(242,138,21,.25); outline-offset: 2px; }
+.field--full { grid-column: 1 / -1; }
 .quote-form .button { width: 100%; cursor: pointer; }
 .quote-form .button:disabled { cursor: wait; opacity: .68; transform: none; box-shadow: none; }
 .form-trap { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }

@@ -1,0 +1,39 @@
+/* Plumbing: mobile-first; shared layout lives in ../assets/site.css. */
+.page-plumbing h1 { font-size: clamp(2.5rem, 10.5vw, 4rem); }
+.hero-art { aspect-ratio: 16 / 10; background: radial-gradient(circle at 70% 30%, #1d2d4d, #101d38 70%); }
+.hero-art svg { display: block; width: 100%; height: 100%; }
+.hero-phone { font-size: .95rem; font-weight: 700; padding: 10px 8px; align-self: center; }
+.final-phone { font-size: .95rem; font-weight: 700; padding: 10px 8px; align-self: center; }
+.page-plumbing .hero-proof { display: flex; flex-wrap: wrap; gap: 0 18px; }
+.page-plumbing .hero-proof span { border-bottom: 0; }
+.plumbing-services { display: grid; grid-template-columns: 1fr; gap: 18px; }
+.plumbing-services .planning-card { min-height: 0; }
+.plumbing-services .benefit-icon { margin-bottom: 38px; }
+.section-actions { margin-top: 34px; gap: 16px 24px; }
+.section-actions .inline-cta { margin-top: 0; }
+.leak-layout { display: grid; grid-template-columns: 1fr; gap: 28px; align-items: end; }
+.leak-layout h2 { margin-bottom: 0; }
+.leak-layout .button-row { margin-top: 30px; }
+.page-plumbing .planning-card h3 { margin-bottom: 12px; }
+.work-gallery .work-placeholder:nth-child(n) { display: flex; align-items: center; justify-content: center; border: 1px dashed rgba(255,255,255,.22); background: linear-gradient(135deg, #17233b, #0f1b33); }
+.work-placeholder svg { width: 54px; height: 54px; stroke: #f7bd78; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; opacity: .7; }
+@media (min-width: 681px) {
+  .page-plumbing .hero { min-height: min(820px, 100svh); }
+  .hero-art { aspect-ratio: auto; }
+  .hero-art svg { position: absolute; right: -4%; top: 0; width: 64%; height: 100%; opacity: .9; }
+  .page-plumbing .hero-media::after { background: linear-gradient(90deg, rgba(11,23,48,.96) 30%, rgba(11,23,48,.35) 70%, rgba(11,23,48,.1)); }
+  .page-plumbing h1 { font-size: clamp(3rem, 5.8vw, 5.8rem); }
+  .page-plumbing .hero-proof { gap: 0; }
+  .page-plumbing .hero-proof span { margin-right: 0; padding-right: 18px; margin-right: 18px; }
+  .hero-phone, .final-phone { align-self: auto; min-height: 50px; }
+  .plumbing-services { grid-template-columns: repeat(2, 1fr); }
+  .work-gallery { grid-auto-rows: 260px; }
+  .work-gallery figure:nth-child(n) { grid-column: span 6; grid-row: auto; }
+}
+@media (min-width: 981px) {
+  .plumbing-services { grid-template-columns: repeat(4, 1fr); }
+  .plumbing-services .planning-card { min-height: 340px; }
+  .leak-layout { grid-template-columns: 1.1fr .9fr; gap: 80px; }
+  .work-gallery figure:nth-child(1), .work-gallery figure:nth-child(4) { grid-column: span 7; }
+  .work-gallery figure:nth-child(2), .work-gallery figure:nth-child(3) { grid-column: span 5; }
+}
