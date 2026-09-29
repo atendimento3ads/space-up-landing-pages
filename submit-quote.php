@@ -4,6 +4,10 @@ declare(strict_types=1);
 const CONTACT_EMAIL = "contact@spaceupconstruction.com";
 const SITE_HOST = "services.spaceupconstruction.com";
 const RATE_LIMIT_SECONDS = 20;
+// The domain's SPF/DMARC only authorize Microsoft 365, so mail() from this
+// host is rejected or quarantined. Leads are relayed through FormSubmit first.
+const RELAY_ENDPOINT = "https://formsubmit.co/ajax/" . CONTACT_EMAIL;
+const RELAY_TIMEOUT_SECONDS = 10;
 
 header("Cache-Control: no-store, max-age=0");
 header("X-Content-Type-Options: nosniff");
@@ -143,8 +147,85 @@ function release_submission_lock($handle, bool $mark_sent): void
     fclose($handle);
 }
 
-function deliver_message(string $subject, string $body, string $reply_to): bool
+function relay_message(string $subject, array $fields, string $reply_to): bool
 {
+    $payload = json_encode(
+        $fields + [
+            "_subject" => $subject,
+            "_replyto" => $reply_to,
+            "_template" => "table",
+            "_captcha" => "false",
+        ],
+        JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
+    );
+    if ($payload === false) {
+        return false;
+    }
+
+    // FormSubmit ties activation to the referring site, so always send the same one.
+    $headers = [
+        "Content-Type: application/json",
+        "Accept: application/json",
+        "Origin: https://" . SITE_HOST,
+        "Referer: https://" . SITE_HOST . "/",
+    ];
+
+    $status = 0;
+    $response = false;
+    if (function_exists("curl_init")) {
+        $curl = curl_init(RELAY_ENDPOINT);
+        curl_setopt_array($curl, [
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => $payload,
+            CURLOPT_HTTPHEADER => $headers,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_CONNECTTIMEOUT => 5,
+            CURLOPT_TIMEOUT => RELAY_TIMEOUT_SECONDS,
+        ]);
+        $response = curl_exec($curl);
+        $status = (int) curl_getinfo($curl, CURLINFO_RESPONSE_CODE);
+    } else {
+        $context = stream_context_create([
+            "http" => [
+                "method" => "POST",
+                "header" => implode("\r\n", $headers),
+                "content" => $payload,
+                "timeout" => RELAY_TIMEOUT_SECONDS,
+                "ignore_errors" => true,
+            ],
+        ]);
+        $response = @file_get_contents(RELAY_ENDPOINT, false, $context);
+        if (
+            isset($http_response_header[0]) &&
+            preg_match('/\s(\d{3})\s/', $http_response_header[0], $match)
+        ) {
+            $status = (int) $match[1];
+        }
+    }
+
+    $result = is_string($response) ? json_decode($response, true) : null;
+    $success = is_array($result) ? $result["success"] ?? false : false;
+    if ($status === 200 && ($success === true || $success === "true")) {
+        return true;
+    }
+
+    // An unactivated form answers 200 with success "false" and an activation notice.
+    $detail = is_array($result) ? (string) ($result["message"] ?? "") : "";
+    error_log(
+        "Space Up quote form: relay failed (HTTP " .
+            $status .
+            ") " .
+            substr($detail, 0, 300),
+    );
+    return false;
+}
+
+function deliver_message(
+    string $subject,
+    string $body,
+    array $fields,
+    string $reply_to
+): bool {
     $test_mode =
         getenv("SPACEUP_MAIL_TEST_MODE") === "1" &&
         in_array(PHP_SAPI, ["cli", "cli-server"], true);
@@ -152,6 +233,11 @@ function deliver_message(string $subject, string $body, string $reply_to): bool
         return true;
     }
 
+    if (relay_message($subject, $fields, $reply_to)) {
+        return true;
+    }
+
+    // Fallback: local mail may still reach quarantine, where it can be released.
     $headers = [
         "From: Space Up Website <" . CONTACT_EMAIL . ">",
         "Reply-To: " . $reply_to,
@@ -265,29 +351,29 @@ if (!rate_limit_allows_request()) {
 
 $subject =
     "[Space Up Website] New " . $allowed_services[$service] . " quote request";
-$body = implode("\n", [
-    "New quote request from the Space Up Construction website",
-    "",
-    "Service: " . $allowed_services[$service],
-    "Name: " . $name,
-    "Phone: " . $phone,
-    "Email: " . $email,
-    "ZIP Code: " . ($zip !== "" ? $zip : "Not provided"),
-]);
+$fields = [
+    "Service" => $allowed_services[$service],
+    "Name" => $name,
+    "Phone" => $phone,
+    "Email" => $email,
+    "ZIP Code" => $zip !== "" ? $zip : "Not provided",
+];
 if (isset($allowed_needs[$service])) {
-    $body .= "\nNeeds help with: " . $need;
+    $fields["Needs help with"] = $need;
 }
 if ($details !== "") {
-    $body .= "\nProject details: " . $details;
+    $fields["Project details"] = $details;
 }
-$body .= "\n" . implode("\n", [
-    "",
-    "Submitted: " . gmdate("Y-m-d H:i:s") . " UTC",
-]);
+$fields["Submitted"] = gmdate("Y-m-d H:i:s") . " UTC";
 
-if (!deliver_message($subject, $body, $email)) {
+$body = "New quote request from the Space Up Construction website\n";
+foreach ($fields as $label => $value) {
+    $body .= ($label === "Submitted" ? "\n" : "") . "\n" . $label . ": " . $value;
+}
+
+if (!deliver_message($subject, $body, $fields, $email)) {
     release_submission_lock($submission_lock, false);
-    error_log("Space Up quote form: local mail delivery failed.");
+    error_log("Space Up quote form: relay and local mail delivery failed.");
     respond(
         500,
         "We could not send your request. Please call (508) 474-9407 or try again shortly.",
