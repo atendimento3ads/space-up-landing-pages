@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parent.parent
 BASE = 'https://services.spaceupconstruction.com/'
 PAGES = [ROOT / 'index.html', *sorted(ROOT.glob('*/index.html'))]
 # Layout previews are noindex and canonicalise to the page they may replace.
-PREVIEWS = {'epoxy-flooring-v2': 'epoxy-flooring'}
+PREVIEWS = {'epoxy-flooring-v2': 'epoxy-flooring', 'siding-finishing-v2': 'siding-finishing'}
 POLICY = (ROOT / '.htaccess').read_text()
 
 class Document(HTMLParser):
@@ -96,7 +96,7 @@ for page in PAGES:
                 assert actual == structured, f'{page}: FAQ schema does not match visible answers'
     assert 'GTM-52FS343L' in document.scripts[0][1], f'{page}: GTM must be the first script'
     quote_forms = [a for t, a in document.elements if t == 'form' and 'quote-form' in a.get('class', '').split()]
-    if page.parent.name in ('epoxy-flooring', 'epoxy-flooring-v2', 'siding-finishing', 'garage-remodeling', 'plumbing'):
+    if page.parent.name in ('epoxy-flooring', 'epoxy-flooring-v2', 'siding-finishing', 'siding-finishing-v2', 'garage-remodeling', 'plumbing'):
         assert len(quote_forms) == 1, f'{page}: expected one quote form'
         form = quote_forms[0]
         assert form.get('action') == '/submit-quote.php' and form.get('method') == 'post', f'{page}: incorrect form endpoint'

@@ -62,6 +62,12 @@ figure { margin: 0; }
 .benefit-grid { display: grid; gap: 32px; }
 .benefit p { margin-bottom: 0; }
 
+.card-grid { display: grid; gap: 8px; }
+.plain-card { padding: 26px 22px; background: var(--white); }
+.plain-card p { margin-bottom: 0; }
+.phone-link { display: inline-flex; align-items: center; min-height: 44px; font-size: 1.1rem; font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
+.use-list .button-row { margin-top: 24px; }
+.use-list .button-row .button { margin-top: 0; }
 .finish-grid { display: grid; gap: 8px; }
 .finish-card { display: flex; flex-direction: column; background: var(--white); }
 .finish-card img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
@@ -166,6 +172,8 @@ details p { padding: 0 32px 20px 0; }
   .hero-description { font-size: 1.35rem; }
   .hero-proof { display: flex; flex-wrap: wrap; gap: 6px 30px; }
   .benefit-grid { grid-template-columns: repeat(3, 1fr); gap: 40px; }
+  .card-grid { grid-template-columns: repeat(3, 1fr); }
+  .plain-card { padding: 30px 28px; }
   .finish-grid { grid-template-columns: repeat(2, 1fr); }
   .finish-other { grid-template-columns: 1fr auto; align-items: center; gap: 32px; padding: 30px 34px; }
   .steps { grid-template-columns: repeat(2, 1fr); gap: 36px 40px; }

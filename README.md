@@ -8,6 +8,7 @@ Static landing pages built with HTML, mobile-first CSS, and lightweight progress
 - `/garage-remodeling/` — Residential garage remodeling: flooring, walls/drywall, painting and finish work
 - `/plumbing/` — Residential plumbing repairs, leaks, replacements and installations
 - `/epoxy-flooring-v2/` — Layout preview of the epoxy page styled after spaceupconstruction.com (Montserrat, square corners, full-width hero). It uses `assets/site-v2.css`, reuses the images in `/epoxy-flooring/assets/`, is `noindex`, canonicalises to `/epoxy-flooring/`, and is not in `.cpanel.yml` or the sitemap until approved.
+- `/siding-finishing-v2/` — Same V2 preview treatment for the siding page (reuses `/siding-finishing/assets/`, `noindex`, canonical to `/siding-finishing/`).
 
 ## Local preview
 
